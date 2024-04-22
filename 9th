@@ -1,0 +1,39 @@
+Dockerfile
+
+FROM eclipse-temurin:17-jdk-alpine
+VOLUME /tmp
+COPY /target/*.jar app.jar
+ENTRYPOINT ["java","-jar","/app.jar"]
+
+
+docker-compose.yml
+
+version: "3.8"
+services:
+  app:
+    image: 0b6eca2a4f83
+    ports:
+      - "8080:8080"
+    environment:
+      spring.datasource.url: jdbc:mysql://db:3306/db_mca085
+      spring.datasource.driverClassName: com.mysql.cj.jdbc.Driver
+      spring.datasource.username: mca085
+      spring.datasource.password: mca085
+    depends_on:
+      - db
+    networks:
+      - db
+  db:
+    image: mysql
+    environment:
+      MYSQL_ROOT_PASSWORD: mca085
+      MYSQL_DATABASE: db_mca085
+      MYSQL_USER: mca085
+      MYSQL_PASSWORD: mca085
+    networks:
+      - default
+
+networks:
+  default:
+
+
